@@ -1,6 +1,9 @@
+import java.util.Optional;
+
 public class Solution {
     int mod = (int) 1e9 + 7;
     public static int solve(int A) {
+
         if (A <= 2) {
             return 1;
         }
