@@ -16,6 +16,7 @@ public class TicketMapper {
         generateTicketResponseDto.setOperaterName(ticket.getOperator().getName());
         generateTicketResponseDto.setParkingSpotNumber(ticket.getParkingSpot().getParkingSpotNumber());
         generateTicketResponseDto.setResponseStatus(ResponseStatus.SUCCESS);
+        generateTicketResponseDto.setTicketId(ticket.getId());
         return generateTicketResponseDto;
     }
 }

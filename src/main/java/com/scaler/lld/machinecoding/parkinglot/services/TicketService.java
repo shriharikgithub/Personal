@@ -1,11 +1,10 @@
 package com.scaler.lld.machinecoding.parkinglot.services;
 
-import com.scaler.lld.machinecoding.parkinglot.exceptions.ParkingLotCreationFailedException;
 import com.scaler.lld.machinecoding.parkinglot.exceptions.ParkingLotNotFoundException;
 import com.scaler.lld.machinecoding.parkinglot.exceptions.ParkingSpotNotFoundException;
 import com.scaler.lld.machinecoding.parkinglot.models.*;
 import com.scaler.lld.machinecoding.parkinglot.repositories.ITicketRepository;
-import com.scaler.lld.machinecoding.parkinglot.spotassignmentstrategies.SpotAssignmentStrategy;
+import com.scaler.lld.machinecoding.parkinglot.strategies.spotassignmentstrategies.SpotAssignmentStrategy;
 
 import java.util.Date;
 import java.util.Optional;
@@ -52,8 +51,18 @@ public class TicketService implements ITicketService {
         ticket.setVehicle(vehicle);
         ticket.setGate(gate);
         ticket.setOperator(gate.getCurrentOperator());
-        ticketRepository.save(ticket);
+        ticket = ticketRepository.save(ticket);
 
         return ticket;
+    }
+
+    @Override
+    public Optional<Ticket> getTicketById(int ticketId) {
+        return ticketRepository.getTicketById(ticketId);
+    }
+
+    @Override
+    public Optional<Ticket> getTicketByVehicleNumber(String vehicleNumber) {
+        return ticketRepository.getTicketByVehicleNumber(vehicleNumber);
     }
 }

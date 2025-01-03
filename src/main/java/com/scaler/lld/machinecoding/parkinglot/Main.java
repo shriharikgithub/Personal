@@ -2,14 +2,11 @@ package com.scaler.lld.machinecoding.parkinglot;
 
 import com.scaler.lld.machinecoding.parkinglot.controllers.*;
 import com.scaler.lld.machinecoding.parkinglot.dtos.*;
-import com.scaler.lld.machinecoding.parkinglot.models.GateStatus;
-import com.scaler.lld.machinecoding.parkinglot.models.GateType;
-import com.scaler.lld.machinecoding.parkinglot.models.ParkingSpotStatus;
-import com.scaler.lld.machinecoding.parkinglot.models.VehicleType;
+import com.scaler.lld.machinecoding.parkinglot.models.*;
 import com.scaler.lld.machinecoding.parkinglot.repositories.*;
 import com.scaler.lld.machinecoding.parkinglot.services.*;
-import com.scaler.lld.machinecoding.parkinglot.spotassignmentstrategies.RandomSpotAssignmentStrategy;
-import com.scaler.lld.machinecoding.parkinglot.spotassignmentstrategies.SpotAssignmentStrategy;
+import com.scaler.lld.machinecoding.parkinglot.strategies.spotassignmentstrategies.RandomSpotAssignmentStrategy;
+import com.scaler.lld.machinecoding.parkinglot.strategies.spotassignmentstrategies.SpotAssignmentStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,7 @@ public class Main {
     private static GateResponseDto gate1, gate2, gate3;
     private static OperatorResponseDto operator1, operator2, operator3;
     private static ParkingSpotResponseDto parkingSpot1, parkingSpot2, parkingSpot3, parkingSpot4;
+    private static List<Integer> tickets = new ArrayList<>();
 
     private static GateController gateController;
 
@@ -41,7 +39,7 @@ public class Main {
         return generateTicketRequestDto;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         IParkingLotRepository parkingLotRepository = new ParkingLotRepository();
         IParkingFloorRepository parkingFloorRepository = new ParkingFloorRepository();
         IParkingSpotRepository parkingSpotRepository = new ParkingSpotRepository();
@@ -72,21 +70,45 @@ public class Main {
         initParkingSpots();
         GenerateTicketResponseDto generateTicketResponseDto = ticketController.generateTicket(generateTicketRequestDto("KA51N7624", VehicleType.CAR,
                 gate1.getGateId()));
+        tickets.add(generateTicketResponseDto.getTicketId());
         System.out.println(generateTicketResponseDto);
 
         generateTicketResponseDto = ticketController.generateTicket(generateTicketRequestDto("KA01EP0054", VehicleType.CAR,
                 gate1.getGateId()));
+        tickets.add(generateTicketResponseDto.getTicketId());
         System.out.println(generateTicketResponseDto);
 
         generateTicketResponseDto = ticketController.generateTicket(generateTicketRequestDto("KA01EP0014", VehicleType.BIKE,
                 gate2.getGateId()));
+        tickets.add(generateTicketResponseDto.getTicketId());
 
         System.out.println(generateTicketResponseDto);
 
         generateTicketResponseDto = ticketController.generateTicket(generateTicketRequestDto("KA01EP0014", VehicleType.BIKE,
                 gate2.getGateId()));
+        tickets.add(generateTicketResponseDto.getTicketId());
 
         System.out.println(generateTicketResponseDto);
+
+        Thread.sleep(5000);
+
+        BillRepository billRepository = new BillRepository();
+        BillService billService = new BillService(ticketService, billRepository, gateService, parkingSpotService);
+        BillController billController = new BillController(billService);
+        BillResponseDto billResponseDto = billController.createBill(getBillRequestDto());
+        System.out.println(billResponseDto);
+
+
+        generateTicketResponseDto = ticketController.generateTicket(generateTicketRequestDto("KA01EP1111", VehicleType.CAR,
+                gate1.getGateId()));
+        System.out.println(generateTicketResponseDto);
+    }
+
+    private static BillRequestDto getBillRequestDto() {
+        BillRequestDto billRequestDto = new BillRequestDto();
+        billRequestDto.setGateId(gate2.getGateId());
+        billRequestDto.setTicketId(tickets.get(0));
+        return billRequestDto;
     }
 
     public static void initParkingSpots() {
@@ -136,13 +158,23 @@ public class Main {
         gateRequestDto.setOperatorId(operator1.getId());
         gate1 = gateController.createGate(gateRequestDto);
         System.out.println(gate1);
-        gateRequestDto.setGateNumber(13);
-        gateRequestDto.setGateType(GateType.ENTRY_GATE);
+//        gateRequestDto.setGateNumber(13);
+//        gateRequestDto.setGateType(GateType.ENTRY_GATE);
+//        gateRequestDto.setGateStatus(GateStatus.OPEN);
+//        gateRequestDto.setParkingLotId(parkingLotResponseDto.getId());
+//        gateRequestDto.setOperatorId(operator2.getId());
+//        gate2 = gateController.createGate(gateRequestDto);
+//        System.out.println(gate2);
+
+
+        gateRequestDto.setGateNumber(14);
+        gateRequestDto.setGateType(GateType.EXIT_GATE);
         gateRequestDto.setGateStatus(GateStatus.OPEN);
         gateRequestDto.setParkingLotId(parkingLotResponseDto.getId());
         gateRequestDto.setOperatorId(operator2.getId());
         gate2 = gateController.createGate(gateRequestDto);
         System.out.println(gate2);
+
 //        gateRequestDto.setGateNumber(15);
 //        gateRequestDto.setParkingLotId(parkingLotResponseDto.getId());
 //        gate3 = gateController.createGate(gateRequestDto);

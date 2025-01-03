@@ -9,6 +9,15 @@ public class Bill extends BaseModel {
     private Operator operator;
     private int amount;
     private String onlinePaymentLink;
+    private Gate gate;
+
+    public Gate getGate() {
+        return gate;
+    }
+
+    public void setGate(Gate gate) {
+        this.gate = gate;
+    }
 
     public Date getExitTime() {
         return exitTime;

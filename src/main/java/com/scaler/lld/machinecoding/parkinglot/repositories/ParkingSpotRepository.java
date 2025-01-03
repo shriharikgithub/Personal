@@ -22,6 +22,9 @@ public class ParkingSpotRepository implements IParkingSpotRepository {
     public ParkingSpot update(ParkingSpot parkingSpot) throws ParkingSpotNotFoundException {
         int parkingSpotId = parkingSpot.getId();
         if (parkingSpotMap.containsKey(parkingSpotId)) {
+            parkingSpotMap.get(parkingSpotId).setVehicle(parkingSpot.getVehicle());
+            parkingSpotMap.get(parkingSpotId).setParkingSpotStatus(parkingSpot.getParkingSpotStatus());
+            parkingSpotMap.get(parkingSpotId).setUpdatedAt(new Date());
             return parkingSpotMap.get(parkingSpotId);
         } else {
             throw new ParkingSpotNotFoundException();

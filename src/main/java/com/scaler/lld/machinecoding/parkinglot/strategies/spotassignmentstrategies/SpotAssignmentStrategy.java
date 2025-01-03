@@ -1,4 +1,4 @@
-package com.scaler.lld.machinecoding.parkinglot.spotassignmentstrategies;
+package com.scaler.lld.machinecoding.parkinglot.strategies.spotassignmentstrategies;
 
 import com.scaler.lld.machinecoding.parkinglot.models.ParkingLot;
 import com.scaler.lld.machinecoding.parkinglot.models.ParkingSpot;

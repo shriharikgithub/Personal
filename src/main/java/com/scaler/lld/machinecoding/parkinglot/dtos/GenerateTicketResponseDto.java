@@ -12,8 +12,17 @@ public class GenerateTicketResponseDto {
     private Date entryTime;
     private int gateNumber;
     private String operaterName;
+    private int ticketId;
     private ResponseStatus responseStatus;
     private String errorMessage;
+
+    public int getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
+    }
 
     public String getErrorMessage() {
         return errorMessage;

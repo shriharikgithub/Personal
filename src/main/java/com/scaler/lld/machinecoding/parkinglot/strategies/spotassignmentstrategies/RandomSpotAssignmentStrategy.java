@@ -1,10 +1,8 @@
-package com.scaler.lld.machinecoding.parkinglot.spotassignmentstrategies;
+package com.scaler.lld.machinecoding.parkinglot.strategies.spotassignmentstrategies;
 
 import com.scaler.lld.machinecoding.parkinglot.models.*;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Author: Shrihari

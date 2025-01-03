@@ -4,6 +4,7 @@ import com.scaler.lld.machinecoding.parkinglot.models.Ticket;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 /**
@@ -27,7 +28,29 @@ public class TicketRepository implements ITicketRepository {
             return ticket;
         } else {
             ticketMap.put(++lastSaveId, ticket);
+            ticket.setId(lastSaveId);
+            ticket.setCreatedAt(new Date());
+            ticket.setUpdatedAt(new Date());
             return ticket;
         }
+    }
+
+    @Override
+    public Optional<Ticket> getTicketById(int ticketId) {
+        if (ticketMap.containsKey(ticketId)) {
+            return Optional.of(ticketMap.get(ticketId));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+
+    @Override
+    public Optional<Ticket> getTicketByVehicleNumber(String vehicleNumber) {
+        return ticketMap
+                .values()
+                .stream()
+                .filter(t -> t.getVehicle().getVehicleNumber().equalsIgnoreCase(vehicleNumber))
+                .findFirst();
     }
 }

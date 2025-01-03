@@ -39,4 +39,12 @@ public class GlobalExceptionHandler {
     public static String handleParkingSpotCreationFailedException(ParkingSpotCreationFailedException e) {
         return "Error 500: Parking Spot creation failed - " + e.getMessage();
     }
+
+    public static String handleVehicleNotFoundException(VehicleNotFoundException e) {
+        return "Error 404: Vehicle not found - " + e.getMessage();
+    }
+
+    public static String handleTicketNotFoundException(TicketNotFoundException e) {
+        return "Error 404: Ticket not found - " + e.getMessage();
+    }
 }
