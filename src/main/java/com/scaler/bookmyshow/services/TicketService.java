@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionTimedOutException;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class TicketService {
         this.seatRepository = seatRepository;
     }
 
+    @Transactional (propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public Ticket bookTicket(Long userId, Long showId, List<Long> seatIds) throws InvalidArgumentsException, SeatsNotAvailableException {
         Optional<User> optionalUser = userRepository.findById(userId);
 
@@ -55,7 +57,7 @@ public class TicketService {
 
         Optional<Show> optionalShow = showRepository.findById(showId);
 
-        if (optionalUser.isEmpty()) {
+        if (optionalShow.isEmpty()) {
             throw new InvalidArgumentsException("Show with : " + showId + " doesn't exist.");
         }
 
@@ -80,7 +82,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    @Transactional (isolation = Isolation.SERIALIZABLE, timeout = 2)
+    @Transactional (propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public List<ShowSeat> getAndLockShowSeats(List<Seat> seats, Show show) throws SeatsNotAvailableException {
 
         List<ShowSeat> showSeats = showSeatRepository.findAllBySeatInAndShow(seats, show);

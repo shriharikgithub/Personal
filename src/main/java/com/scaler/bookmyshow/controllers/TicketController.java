@@ -25,8 +25,9 @@ public class TicketController {
 
     public BookTicketResponseDto bookTicket(BookTicketRequestDto bookTicketRequestDto) {
         BookTicketResponseDto bookTicketResponseDto = new BookTicketResponseDto();
+        Ticket ticket = null;
         try {
-            Ticket ticket = ticketService.bookTicket(bookTicketRequestDto.getUserId(), bookTicketRequestDto.getShowId(), bookTicketRequestDto.getSeatIds());
+            ticket = ticketService.bookTicket(bookTicketRequestDto.getUserId(), bookTicketRequestDto.getShowId(), bookTicketRequestDto.getSeatIds());
         } catch (InvalidArgumentsException e) {
             bookTicketResponseDto.setResponseStatus(ResponseStatus.FAILURE);
             bookTicketResponseDto.setErrorMessage(e.getMessage());
