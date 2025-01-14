@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 public class City extends BaseModel {
 
-    @OneToMany
+    @OneToMany(mappedBy = "city") // name of the attribute in the other class that is rep
     private List<Theatre> theatres;
 
     private String name;

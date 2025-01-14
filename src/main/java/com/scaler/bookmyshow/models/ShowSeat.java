@@ -1,10 +1,10 @@
 package com.scaler.bookmyshow.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * Author: Shrihari
@@ -20,5 +20,8 @@ public class ShowSeat extends BaseModel {
     @ManyToOne
     private Seat seat;
 
+    @Enumerated(EnumType.ORDINAL)
     private ShowSeatStatus showSeatStatus;
+
+    private Date lockedAt;
 }

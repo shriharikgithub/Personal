@@ -1,7 +1,6 @@
 package com.scaler.bookmyshow.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,5 +19,7 @@ public class Auditorium extends BaseModel {
     @OneToMany
     private List<Seat> seats;
 
+    @Enumerated(EnumType.ORDINAL)
+    @ElementCollection
     private List<Feature> features;
 }
